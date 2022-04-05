@@ -1,0 +1,277 @@
+{%extends 'base_admin.html'%}
+{% block title%}
+管理者主頁
+{% endblock title%}
+{% block content %}
+<script>
+
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName("needs-validation");
+        var validation = Array.prototype.filter.call(forms, function(forms) {
+          forms.addEventListener('submit', function(event) {
+            if (forms.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            forms.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+    
+</script>
+
+<form class="col-lg-6 offset-lg-3" onChange="showForm()">
+    <select id="myselect" class="form-select" aria-label="Default select example">
+        <option value=" " selected="selected">管理功能</option>
+        <option value="addPublish">新增出版社</option>
+        <option value="updatePublish">修改出版社</option>
+        <option value="deletePublish">刪除出版社</option>
+        <option value="searchPublish">查詢出版社</option>
+        <option value="searchBook">查詢書籍</option>
+        <option value="searchComment">查詢評分/評論</option>
+        <option value="searchReader">查詢讀者</option>
+    </select>
+</form>
+<br>
+<form action="/comment_book/publish/add/" method="POST" class="needs-validation" id="addPublish" name="addPublish"  novalidate oninput='comfirm_Password.setCustomValidity(comfirm_Password.value != Password.value ? "密碼不一致" : "")' style="display:none">{% csrf_token %}
+    <div class="col-lg-6 offset-lg-3">
+    <div class="py-5 text">
+        <h1>新增出版社</h2>
+    </div>
+    <div class="row g-3">
+        <div class="col">
+            <label for="InputEmail" class="form-label">信箱</label>
+            <input type="email" class="form-control" name="InputEmail" required="">
+            <div class="invalid-feedback">
+                請填入正確信箱
+            </div>
+        </div>
+        <div class="col">
+            <label for="Password" class="form-label">密碼</label>
+            <input type="password" class="form-control" name="Password" required="">
+            <div class="invalid-feedback">
+                不可為空
+            </div>
+        </div>
+        <div class="col">
+            <label for="comfirm_Password" class="form-label">確認密碼</label>
+            <input type="password" class="form-control" name="comfirm_Password" required="">
+            <div class="invalid-feedback">
+                不可為空且需一致
+            </div>
+        </div>
+    </div>
+    <br>
+      <div class="row g-3">
+        <div class='col-md-2'>
+            <label for="name" class="form-label" >出版社名稱</label>
+            <input type="text" class="form-control" name="name" required="" maxlength=10>
+                <div class="invalid-feedback">
+                    不可為空
+                </div>
+        </div>
+        <div class='col-md-10'>
+            <label for="tel" class="form-label">電話</label>
+            <input type="text" class="form-control" name="tel" >
+        </div>
+    </div>
+    <br>
+    <div class="col-12">
+        
+        <button type="submit" class="btn btn-primary">新增</button>
+        
+      </div>
+
+    </div>
+
+</form>
+<form action="/comment_book/publish/update/" method="POST" class="needs-validation" name="updatePublish" id="updatePublish" novalidate oninput='comfirm_Password.setCustomValidity(comfirm_Password.value != PasswordUpdate.value ? "密碼不一致" : "")' style="display:none" >{% csrf_token %}
+    
+    <div class="col-lg-6 offset-lg-3">
+        <div class="py-5 text">
+            <h1>修改出版社資料</h2>
+        </div>
+        <div class="row g-3">
+            <div class="col">
+            <label for="selectPublisher" class="form-label">選擇出版社</label>
+            <select id="selectPublisher" name="selectPublisher" class="form-select"onChange="updatePublishField(this.id)" required="">
+                <option value="" selected>出版社</option>
+                {% for p in publisher%}
+                <option value="{{p.name}}">{{p.name}}</option>
+                {% endfor %}
+            </select>
+            </div>
+        </div>
+        <br>
+        <div class="row g-3">
+            <div class="col">
+                <label for="InputEmail" class="form-label">信箱</label>
+                <input type="email" class="form-control" name="InputEmailUpdate" id="InputEmailUpdate" required="" value>
+                <div class="invalid-feedback">
+                    請填入正確信箱
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <label for="InputEmail" class="form-label">電話</label>
+                <input type="tel" class="form-control" name="telUpdate" id="telUpdate" value>
+                
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            
+            <div class="col">
+                <label for="Password" class="form-label">密碼</label>
+                <input type="password" class="form-control" name="PasswordUpdate">
+                <small class="passwordRemider" class="form-text text-muted">
+                    可為空，需修改才填入
+                </small>
+            </div>
+            <div class="col">
+                <label for="comfirm_Password" class="form-label">確認密碼</label>
+                <input type="password" class="form-control" name="comfirm_Password">
+                <div class="invalid-feedback">
+                    
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="col-12">
+        
+            <button type="submit" class="btn btn-primary">修改</button>
+            
+        </div>
+    </div>
+
+
+
+</form>
+<form class="needs-validation" name="deletePublish" id="deletePublish" novalidate oninput='comfirm_Password.setCustomValidity(comfirm_Password.value != Password.value ? "密碼不一致" : "")' style="display:none">{% csrf_token %}
+    <div class="col-lg-6 offset-lg-3">
+        <div class="py-5 text">
+            <h1>刪除出版社</h2>
+        </div>
+        <table class="table" >
+            <thead><tr>
+                <th scope = "col">name</th>
+                <th scope = "col">Email</th>
+                <th scope = "col">tel</th>
+                <th scope = "col">刪除</th>
+
+            </tr>
+            </thead>
+            <tbody>
+                {% for p in publisher%}
+                    <tr>
+                        <td>{{p.name}}</td>
+                        <td>{{p.emailAddr}}</td>
+                        <td>{{p.tel}}</td>
+                        
+                        <td><a href="{% url 'delete' id=p.name %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" onclick="return (confirm('你是否要刪除出版社 \'{{p.name}}\'？'))">delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
+    </div>
+</form>
+<form class="col-lg-6 offset-lg-3" name="searchPublish" id="searchPublish" novalidate oninput='comfirm_Password.setCustomValidity(comfirm_Password.value != Password.value ? "密碼不一致" : "")' style="display:none">{% csrf_token %}
+    <div class="col-lg-6 offset-lg-3">
+        <div class="py-5 text">
+            <h1>查詢出版社資料</h2>
+        </div>
+
+
+
+
+    </div>
+</form>
+<form class="col-lg-6 offset-lg-3" name="searchBook" id="searchBook" novalidate oninput='comfirm_Password.setCustomValidity(comfirm_Password.value != Password.value ? "密碼不一致" : "")' style="display:none">{% csrf_token %}
+    <div class="py-5 text">
+        <h1>查詢書籍</h2>
+    </div>
+
+</form>
+<form class="col-lg-6 offset-lg-3" name="searchComment" id="searchComment" novalidate oninput='comfirm_Password.setCustomValidity(comfirm_Password.value != Password.value ? "密碼不一致" : "")' style="display:none">{% csrf_token %}
+    <div class="py-5 text">
+        <h1>查詢評分/評論</h2>
+    </div>
+
+</form>
+<form class="col-lg-6 offset-lg-3" name="searchReader" id="searchReader" novalidate oninput='comfirm_Password.setCustomValidity(comfirm_Password.value != Password.value ? "密碼不一致" : "")' style="display:none">{% csrf_token %}
+    <div class="py-5 text">
+        <h1>查詢讀者</h2>
+    </div>
+
+</form>
+    
+    <script type="text/javascript">
+        var ori_option="";
+        function showForm(){
+            var select = document.getElementById('myselect');
+            //console.log(select.options);
+            var value = select.options[select.selectedIndex].value;
+            //console.log(value);
+            if(ori_option){
+                document.getElementById(ori_option).style.display='none';
+            }
+            document.getElementById(value).style.display='block';
+            ori_option=value;
+            
+        }
+        showForm();
+    
+    </script>
+    <script type="text/javascript">
+        //update publisher
+        function updatePublishField(x){
+            var publishers=[
+            {% for i in publisher%}
+            ["{{i.name}}","{{i.emailAddr}}","{{i.tel}}"],
+            {% endfor %}
+            ]
+            
+            var selectPublisher = document.getElementById(x);
+            
+            var publisherName = selectPublisher.options[selectPublisher.selectedIndex].value;
+            if(publisherName==""){
+                document.getElementById('InputEmailUpdate').value="";
+                document.getElementById('telUpdate').value="";
+            }
+            for(var i=0;i<publishers.length;i++){
+                if(publisherName==publishers[i][0]){
+                    
+                    document.getElementById('InputEmailUpdate').value=publishers[i][1];
+                    document.getElementById('telUpdate').value=publishers[i][2];
+                    document.getElementById('PasswordUpdate').value="";
+                    document.getElementById('comfirm_Password').value="";
+
+                    break;
+                }
+            }
+            
+        }
+
+        updatePublishField();
+        
+        
+        
+    </script>
+{% if messages %}
+  <script>
+ {% for msg in messages %}
+      alert('{{ msg.message }}');
+    {% endfor %}
+  </script>
+{% endif %}
+
+{%endblock%}

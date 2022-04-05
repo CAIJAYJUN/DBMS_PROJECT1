@@ -1,0 +1,119 @@
+
+    
+{% extends 'base.html' %}
+{% block content %}
+
+<script>
+
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    var forms = document.getElementsByClassName("needs-validation");
+    var validation = Array.prototype.filter.call(forms, function(forms) {
+      forms.addEventListener('submit', function(event) {
+        if (forms.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        forms.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+
+</script>
+<div class="py-5 text">
+    <h2>註冊</h2>
+</div>
+<form action="." method="POST" class="needs-validation" novalidate oninput='comfirm_Password.setCustomValidity(comfirm_Password.value != Password.value ? "密碼不一致" : "")'>{% csrf_token %}
+    <div class="row g-3">
+        <div class="col">
+            <label for="InputEmail" class="form-label">信箱</label>
+            <input type="email" class="form-control" name="InputEmail" required="">
+            <div class="invalid-feedback">
+                請填入正確信箱
+            </div>
+        </div>
+        <div class="col">
+            <label for="Password" class="form-label">密碼</label>
+            <input type="password" class="form-control" name="Password" required="">
+            <div class="invalid-feedback">
+                不可為空
+            </div>
+        </div>
+        <div class="col">
+            <label for="comfirm_Password" class="form-label">確認密碼</label>
+            <input type="password" class="form-control" name="comfirm_Password" required="">
+            <div class="invalid-feedback">
+                不可為空且需一致
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="mb-3">
+        <label for="InputEmail" class="form-label">信箱</label>
+        <input type="email" class="form-control" name="InputEmail" required="">
+        <div class="invalid-feedback">
+            請填入正確信箱
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="Password" class="form-label">密碼</label>
+        <input type="password" class="form-control" name="Password" required="">
+        <div class="invalid-feedback">
+            必填
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="comfirm_Password" class="form-label">確認密碼</label>
+        <input type="password" class="form-control" name="comfirm_Password" required="">
+        <div class="invalid-feedback">
+            必填
+        </div>
+      </div>-->
+      <br>
+      <div class="row g-3">
+        <div class='col-md-2'>
+            <label for="userName" class="form-label">姓名</label>
+            <input type="text" class="form-control" name="userName" required="">
+                <div class="invalid-feedback">
+                    可以匿名
+                </div>
+        </div>
+        <div class='col-md-10'>
+            <label for="address" class="form-label">居住地址</label>
+            <input type="text" class="form-control" name="address" >
+        </div>
+      </div>
+      <br>
+      <div class="row g-3">
+        <div class="col-md-2">
+            <label for="year" class="form-label">出生年</label>
+            <select class="form-select" name='year' id='year' required="">
+                <option selected value="">年份</option>
+                <div class="invalid-feedback">
+                    請選擇出生年份
+                </div>
+                {%for y in years%}
+                <option>{{y}}</option>
+                {% endfor %}
+            </select>
+        </div>
+      </div>
+      <br>
+      <div class="col-12">
+        
+        <button type="submit" class="btn btn-primary">註冊</button>
+        
+      </div>
+
+</form>
+{% if messages %}
+  <script>
+ {% for msg in messages %}
+      alert('{{ msg.message }}');
+    {% endfor %}
+  </script>
+{% endif %}
+{% endblock  %}
+

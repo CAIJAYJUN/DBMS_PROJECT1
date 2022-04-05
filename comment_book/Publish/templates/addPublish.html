@@ -1,0 +1,18 @@
+{% extends 'base_admin.html' %}
+{% block content %}
+{% block title%}
+新增出版社
+{% endblock title%}
+
+
+
+
+
+{% if messages %}
+  <script>
+ {% for msg in messages %}
+      alert('{{ msg.message }}');
+    {% endfor %}
+  </script>
+{% endif %}
+{% endblock  %}

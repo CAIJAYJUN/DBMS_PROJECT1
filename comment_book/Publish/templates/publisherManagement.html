@@ -1,0 +1,323 @@
+{%extends 'base_Publisher.html'%}
+{% block title%}
+出版社主頁
+{% endblock title%}
+{% block content %}
+<script>
+
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName("needs-validation");
+        var validation = Array.prototype.filter.call(forms, function(forms) {
+          forms.addEventListener('submit', function(event) {
+            if (forms.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            forms.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+    
+</script>
+
+<form class="col-lg-6 offset-lg-3" onChange="showForm()">
+    <select id="myselect" class="form-select" aria-label="Default select example">
+        <option value=" " selected="selected">管理功能</option>
+        <option value="addBook">上架書籍</option>
+        <option value="deleteBook">下架書籍</option>
+        <option value="addAuthor">新增作者</option>
+        <option value="searchAuthor">查詢作者</option>
+        <option value="searchComment">查詢書籍/評論</option>
+        <option value="bookInfo">書籍統計資訊</option>
+    </select>
+</form>
+<br>
+<form action="/comment_book/publish/addBook/" method="POST" enctype="multipart/form-data" class="needs-validation" id="addBook" name="addBook"  novalidate  style="display:none">{% csrf_token %}
+    <div class="col-lg-6 offset-lg-3">
+    <div class="py-5 text">
+        <h1>上架書籍</h2>
+    </div>
+    <div class="row g-3">
+        <div class="col">
+            <label for="ISBN" class="form-label">ＩＳＢＮ</label>
+            <input type="text" class="form-control" name="ISBN" required="">
+            <div class="invalid-feedback">
+                不可為空
+            </div>
+        </div>
+        <div class="col">
+            <label for="bookName" class="form-label">書名</label>
+            <input type="text" class="form-control" name="bookName" required="">
+            <div class="invalid-feedback">
+                不可為空
+            </div>
+        </div>
+        <div class="col">
+            <label for="publishYear" class="form-label">出版年份</label>
+            <select class="form-select" name='publishYear' id='publishYear' required="">
+                <option selected value="">年份</option>
+                <div class="invalid-feedback">
+                    請選擇出版年份
+                </div>
+                {%for y in years%}
+                <option>{{y}}</option>
+                {% endfor %}
+            </select>
+            <div class="invalid-feedback">
+                不可為空
+            </div>
+        </div>
+    </div>
+    <br>
+      <div class="row g-3">
+        <div class='col'>
+            <label for="lang" class="form-label" >語言</label>
+            <select id="selectLang" name="selectLang" class="form-select" required="">
+                <option value="" selected>語言</option>
+                <option value="1">中文</option>
+                <option value="2">西班牙語</option>
+                <option value="3">英文</option>
+                <option value="4">孟加拉語</option>
+                <option value="5">印地語／烏爾都語</option>
+                <option value="6">阿拉伯語</option>
+
+            </select>
+        </div>
+        <div class='col'>
+            <label for="author" class="form-label" >作者</label>
+            <select id="selectAuthor" name="selectAuthor" multiple="multiple" class="form-select" required="">
+                <option value="" selected>作者</option>
+                {% for a in author%}
+                <option value="{{a.name}}">{{a.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class='col'>
+            <label for="bookDesc" class="form-label">書籍描述</label>
+            <textarea class="form-control" name="bookDesc" row="5"></textarea>
+        </div>
+        
+      </div>  
+      <br>
+      
+      <div calss="row">
+        <div class='col'>
+            <label for="image" class="form-label">封面上傳</label>
+            <input type="file" name="bookImage" accept="image/png, image/jpeg, image/gif" class="form-control" />
+        </div>
+      </div>
+    
+    <br>
+    <div class="col-12">
+        
+        <button type="submit" class="btn btn-primary">上架</button>
+        
+    </div>
+
+    </div>
+
+</form>
+{% comment %} <form class="needs-validation" name="deleteBook" id="deleteBook" novalidate style="display:none">{% csrf_token %}
+    <div class="col-lg-6 offset-lg-3">
+        <div class="py-5 text">
+            <h1>下架書籍</h2>
+        </div>
+        <table class="table" >
+            <thead><tr>
+                <th scope = "col">ＩＳＢＮ</th>
+                <th scope = "col">書名</th>
+                <th scope = "col">作者</th>
+                <th scope = "col">刪除</th>
+
+            </tr>
+            </thead>
+            <tbody>
+                {% for p in publisher%}
+                    <tr>
+                        <td>{{p.isbn}}</td>
+                        <td>{{p.name}}</td>
+                        <td>{{p.author}}</td>
+                        
+                        <td><a href="{% url 'deleteBook' id=p.isbn %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" onclick="return (confirm('你是否要刪除書籍 \'{{p.name}}\'？'))">delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
+    </div>
+</form> {% endcomment %}
+
+<form action="/comment_book/publish/addAuthor/" method="POST" class="needs-validation" name="addAuthor" id="addAuthor" novalidate style="display:none" >{% csrf_token %}
+    
+    <div class="col-lg-6 offset-lg-3">
+        <div class="py-5 text">
+            <h1>新增作者</h2>
+        </div>
+        <div class="row g-3">
+            <div class="col">
+            <label for="authorName" class="form-label">作者筆名/姓名</label>
+                <input type="text" class="form-control" name="authorName" id="authorName" required="" maxlength=10>
+                <div class="invalid-feedback">
+                    不可為空
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row g-3">
+            <div class="col">
+                <label for="InputEmail" class="form-label">信箱</label>
+                <input type="email" class="form-control" name="AuthorEmail" id="AuthorEmail" required="" value>
+                <div class="invalid-feedback">
+                    請填入正確信箱
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <label for="sex" class="form-label">性別</label>
+                <select id="selectLang" name="selectSex" class="form-select" required="">
+                    <option value="" selected>性別</option>
+                    <option value="1">女</option>
+                    <option value="2">男</option>
+                    <option value="3">其他</option>
+    
+                </select>
+                
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <label for="authorDesc" class="form-label">作者簡介</label>
+                <textarea class="form-control" name="authorDesc" row="3"></textarea>
+            </div>
+            
+        </div>
+        <br>
+        <div class="row">
+            
+            <div class="col">
+                <label for="authorYear" class="form-label">出生年份</label>
+                <select class="form-select" name='authorYear' id='authorYear' required="">
+                    <option selected value="">出生年份</option>
+                    <div class="invalid-feedback">
+                        請選擇出生年份
+                    </div>
+                    {%for y in years%}
+                    <option>{{y}}</option>
+                    {% endfor %}
+                </select>
+                
+            </div>
+            
+        </div>
+        <br>
+        <div class="col-12">
+        
+            <button type="submit" class="btn btn-primary">新增</button>
+            
+        </div>
+    </div>
+
+
+
+</form>
+<form class="col-lg-6 offset-lg-3" name="searchAuthor" id="searchAuthor" novalidate oninput='comfirm_Password.setCustomValidity(comfirm_Password.value != Password.value ? "密碼不一致" : "")' style="display:none">{% csrf_token %}
+    
+        <div class="py-5 text">
+            <h1>查詢作者</h2>
+        </div>
+
+
+
+
+    
+</form>
+<form class="col-lg-6 offset-lg-3" name="searchBook" id="searchBook" novalidate oninput='comfirm_Password.setCustomValidity(comfirm_Password.value != Password.value ? "密碼不一致" : "")' style="display:none">{% csrf_token %}
+    <div class="py-5 text">
+        <h1>查詢書籍</h2>
+    </div>
+
+</form>
+<form class="col-lg-6 offset-lg-3" name="searchComment" id="searchComment" novalidate oninput='comfirm_Password.setCustomValidity(comfirm_Password.value != Password.value ? "密碼不一致" : "")' style="display:none">{% csrf_token %}
+    <div class="py-5 text">
+        <h1>查詢評分/評論</h2>
+    </div>
+
+</form>
+<form class="col-lg-6 offset-lg-3" name="bookInfo" id="bookInfo" novalidate oninput='comfirm_Password.setCustomValidity(comfirm_Password.value != Password.value ? "密碼不一致" : "")' style="display:none">{% csrf_token %}
+    <div class="py-5 text">
+        <h1>書籍統計資訊</h2>
+    </div>
+
+</form>
+    
+    <script type="text/javascript">
+        var ori_option="";
+        function showForm(){
+            var select = document.getElementById('myselect');
+            //console.log(select.options);
+            var value = select.options[select.selectedIndex].value;
+            //console.log(value);
+            if(ori_option){
+                document.getElementById(ori_option).style.display='none';
+            }
+            document.getElementById(value).style.display='block';
+            ori_option=value;
+            
+        }
+        showForm();
+    
+    </script>
+    <script type="text/javascript">
+        //update publisher
+        function updatePublishField(x){
+            var publishers=[
+            {% for i in publisher%}
+            ["{{i.name}}","{{i.emailAddr}}","{{i.tel}}"],
+            {% endfor %}
+            ]
+            
+            var selectPublisher = document.getElementById(x);
+            
+            var publisherName = selectPublisher.options[selectPublisher.selectedIndex].value;
+            if(publisherName==""){
+                document.getElementById('InputEmailUpdate').value="";
+                document.getElementById('telUpdate').value="";
+            }
+            for(var i=0;i<publishers.length;i++){
+                if(publisherName==publishers[i][0]){
+                    
+                    document.getElementById('InputEmailUpdate').value=publishers[i][1];
+                    document.getElementById('telUpdate').value=publishers[i][2];
+                    document.getElementById('PasswordUpdate').value="";
+                    document.getElementById('comfirm_Password').value="";
+
+                    break;
+                }
+            }
+            
+        }
+
+        updatePublishField();
+        
+        
+        
+    </script>
+{% if messages %}
+  <script>
+ {% for msg in messages %}
+      alert('{{ msg.message }}');
+    {% endfor %}
+  </script>
+{% endif %}
+
+{%endblock%}

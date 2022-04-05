@@ -1,0 +1,39 @@
+{% extends 'base_Publisher.html' %}
+{% block content %}
+{% block title%}
+出版社登入
+{% endblock title%}
+<form class="col-lg-6 offset-lg-4" action="." method="POST">{% csrf_token %}
+    <div class="py-5 text">
+        <h1>登入</h2>
+    </div>
+    <div class="row">
+        <div class="form-group col-lg-7">
+            <label for="email" class="form-label">電子郵件</label>
+            <input type="email" class="form-control" id="email" name='email'>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="form-group col-lg-7">
+            <label for="password" class="form-label">密碼</label>
+            <input type="password" class="form-control" id="password" name='password'>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class=="row">
+        
+        <button type="submit" class="btn btn-primary">登入</button>
+        
+    </div>
+ 
+</form>
+{% if messages %}
+  <script>
+ {% for msg in messages %}
+      alert('{{ msg.message }}');
+    {% endfor %}
+  </script>
+{% endif %}
+{% endblock  %}
