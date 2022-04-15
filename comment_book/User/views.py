@@ -9,7 +9,7 @@ from django.contrib import messages
 import datetime
 from Publish.models import Publisher
 from Book.models import Book
-from User.models import User, BookList
+from User.models import User, BookList, CommentBook
 from django import template
 from django.shortcuts import render_to_response
 
@@ -89,6 +89,31 @@ def build_bookshelf(request):
     # isbn = request.POST["ISBN"]
 
     return render(request, "bookshelf.html", locals())
+
+
+def user_comment(request):
+    if request.method == "POST":
+        ISBN = request.POST["ISBN"]
+
+        if not Book.objects.filter(ISBN=ISBN).exists():
+            messages.success(request, "沒這本書")
+            request.session.flush()
+            return redirect("/comment_book/user_comment/")
+
+        title = request.POST["title"]
+        star = request.POST["star"]
+        id_num = request.POST["email"]
+        comments = request.POST["comments"]
+
+        user = User.objects.get(id_num=id_num)
+        book = Book.objects.get(ISBN=ISBN)
+        # 評論書籍
+        con = CommentBook(user=user, book=book, comments=comments, star=star)
+        con.save()
+        request.session.flush()
+        return redirect("/comment_book/user_comment/")
+
+    return render(request, "user_comment.html", locals())
 
 
 def logout(request):
