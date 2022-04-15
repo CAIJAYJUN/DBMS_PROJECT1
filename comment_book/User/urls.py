@@ -8,7 +8,7 @@ urlpatterns = [
     url(r"^register/$", views.register),
     url(r"^login/$", views.login),
     url(r"^main/$", views.main),  # 登入後頁面
-    url(r"^build_bookshelf/$", views.build_bookshelf),  # 建立書架
+    url(r"^build_bookshelf/$", views.build_bookshelf, name="build_bookshelf"),  # 建立書架
     url(r"^registerAdmin/$", views.register_admin),
     url(r"^admin_login/$", views.adminLogin),
     url(r"^main_manage/$", views.mainManage),

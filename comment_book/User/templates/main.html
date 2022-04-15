@@ -4,11 +4,22 @@
 使用者介面
 {% endblock title%}
 
-<H3> this {{user_name}}'s bookshelf.</H3>
+
+
 <div class="btn_div">
     <p class="welcome">Welcome {{user_name}}<a href="user profile.html"></a>
     </p>
 </div>
+
+<form>
+    <button "http://stackoverflow.com">Go to Stack Overflow!</button>
+</form>
+
+<form>
+    <button formaction={% url 'build_bookshelf' %} type="button" class="btn btn-primary">我的書單</button>
+</form>
+
+
 <table class="table">
     <thead>
         <tr>
