@@ -82,12 +82,11 @@ def main(request):
 
 def build_bookshelf(request):
     user_name = User.objects.filter(id_num=request.session["id_num"]).all().first().name
-    if request.method == "POST":
-        name = request.POST["name"]
-        if BookList.objects.filter(user=request.session["id_num"]).exists():
-            messages.success(request, "書籍已存在")
-    name = request.POST["name"]
-    isbn = request.POST["ISBN"]
+    # if request.method == "POST":
+    # name = request.POST["name"]
+
+    # name = request.POST["name"]
+    # isbn = request.POST["ISBN"]
 
     return render(request, "bookshelf.html", locals())
 
