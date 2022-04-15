@@ -4,25 +4,15 @@
 使用者介面
 {% endblock title%}
 
-
-
+<H3> this {{user_name}}'s bookshelf.</H3>
 <div class="btn_div">
     <p class="welcome">Welcome {{user_name}}<a href="user profile.html"></a>
     </p>
 </div>
-
-<form>
-    <button "http://stackoverflow.com">Go to Stack Overflow!</button>
-</form>
-
-<form>
-    <button formaction={% url 'build_bookshelf' %} type="button" class="btn btn-primary">我的書單</button>
-</form>
-
-
 <table class="table">
     <thead>
         <tr>
+            <th scope="col">封面</th>
             <th scope="col">title</th>
             <th scope="col">author</th>
             <th scope="col">year</th>
@@ -32,10 +22,14 @@
     <tbody>
         {% for b in book %}
         <tr>
+            <td><img src="/media/{{ b.bookImage }}" width="240"></td>
             <td> {{ b.title }}</td>
             <td> {{ b.name }}</td>
             <td> {{ b.pubYear }}</td>
             <td>{{b.bookProfile}}</td>
+            {% comment %} <td><a href="{% url 'addBooktoShelf' id=b.ISBN %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">加入書架</a> </td>{% endcomment %}
+            {% comment %} <td><a href="{% url 'comment_a_book' id=b.ISBN %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">評論</a> </td>{% endcomment %}
+            
             <!-- 傳遞商品編號 -->
         </tr>
         {% endfor %}
