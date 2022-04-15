@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+{% block title%}
+使用者介面
+{% endblock title%}
+
+<H3> this {{user}}'s bookshelf.</H3>
+<form method="post" action="/comment_book/buildBook">
+    <h2>建立我的書單</h2>
+    <form class="'row g-3">
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" name='name' placeholder="書單名稱" aria-label="First name">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" name='ISBN' placeholder="ISBN" aria-label="Last name">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</form>
+
+{% if messages %}
+<script>
+    {% for msg in messages %}
+    alert('{{ msg.message }}');
+    {% endfor %}
+</script>
+{% endif %}
+{% endblock %}
