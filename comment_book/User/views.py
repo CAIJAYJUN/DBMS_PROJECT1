@@ -8,6 +8,7 @@ from .models import User
 from django.contrib import messages
 import datetime
 from Publish.models import Publisher
+from Book.models import Book
 from User.models import User, BookList
 from django import template
 from django.shortcuts import render_to_response
@@ -73,6 +74,9 @@ def login(request):
 def main(request):
     # 讀者登入後頁面
     user_name = User.objects.filter(id_num=request.session["id_num"]).all().first().name
+    book = Book.objects.raw(
+        "SELECT * FROM (BOOK_BOOK NATURAL JOIN BOOK_AUTHORWRITEBOOK) NATURAL JOIN BOOK_AUTHOR"
+    )
     return render(request, "main.html", locals())
 
 
