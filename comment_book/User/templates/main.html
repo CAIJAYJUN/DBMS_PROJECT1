@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+{% block title%}
+使用者介面
+{% endblock title%}
+
+<H1> this {{user}}'s bookshelf.</H1>
+<img src="../../media/image/截圖_2022-03-28_下午12.57.29.png" width="200" height="200">
+<div class="btn_div">
+    <h1 class="book_title left">Book Grading System</h1>
+</div>
+<div class="btn_div">
+    <p class="welcome">Welcome {{user_name}}<a href="user profile.html"></a>
+    </p>
+</div>
+<div class="book_table">
+    <form method="post" action=>
+        <table cellpadding="10" border='3'>
+            <tr>
+                <th>書名</th>
+                <th>作者</th>
+                <th>出版社</th>
+            </tr>
+            <tr>
+                <td><a href="info.html">哈利波特</a></td>
+                <td><a href="author info.html">jk</a></td>
+                <td><a href="publisher info.html">安安</a></td>
+
+                </td>
+
+            </tr>
+        </table>
+    </form>
+</div>
+
+{% if messages %}
+<script>
+    {% for msg in messages %}
+    alert('{{ msg.message }}');
+    {% endfor %}
+</script>
+{% endif %}
+{% endblock %}
