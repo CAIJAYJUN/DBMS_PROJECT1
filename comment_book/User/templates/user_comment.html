@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+{% block title%}
+使用者介面
+{% endblock title%}
+
+<form method="post" action="{% url 'user_comment' %}">
+    {% csrf_token %}
+    <h2>書籍評分</h2>
+    <form class="'row g-3">
+        <div class="row">
+            <div class="col">
+                <label class="form-label">ISBN</label>
+                <input type="text" class="form-control" name='ISBN' placeholder="ISBN">
+            </div>
+            <div class="col">
+                <label class="form-label">書名</label>
+                <input type="text" class="form-control" name='title' placeholder="書名">
+            </div>
+            <div class="col">
+                <label class="form-label">評分 0-5 分</label>
+                <input type="text" class="form-control" name='star' placeholder="rating">
+            </div>
+        </div>
+        <div class="row">
+            <label class="form-label">email</label>
+            <input type="text" class="form-control" name='email' placeholder="email" aria-label="First name">
+        </div>
+        <div class='row'>
+            <label class="form-label w-100 p-3">評論</label>
+            <textarea class="form-control" name='comments' placeholder="寫下你的評論" rows="5"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</form>
+
+{% if messages %}
+<script>
+    {% for msg in messages %}
+    alert('{{ msg.message }}');
+    {% endfor %}
+</script>
+{% endif %}
+{% endblock %}
