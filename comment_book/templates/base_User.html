@@ -13,18 +13,19 @@
   <body>
     <div class="container">
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-          <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+          <a href="/comment_book/main/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
            
             <span class="fs-4">Comment Book</span>
           </a>
     
-          <ul class="nav nav-pills">
-            <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
-            
-            <li class="nav-item"><a href="#" class="nav-link">我的清單</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">評論</a></li>
-          </ul>
+          
           <div class="col-md-3 text-end">
+            
+            
+              
+            <button type="button" class="btn btn-outline-primary me-2" onclick="window.location.href='/comment_book/getUserList/'">我的清單</button>
+            <button type="button" class="btn btn-outline-primary me-2" onclick="window.location.href='/comment_book/searchBook/'">搜尋書籍</button>
+
             <button type="button" class="btn btn-outline-primary me-2" onclick="window.location.href='/comment_book/logout/'">登出</button>
           </div>
         </header>

@@ -21,13 +21,14 @@ from django.conf.urls import url
 import User.urls
 from django.conf import settings
 from django.conf.urls.static import static
+
 router = DefaultRouter()
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^comment_book/',include('User.urls')),
     url(r'^comment_book/',include('Publish.urls')),
-    
+    # path('plot', include(site_obj.urls)),
     
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

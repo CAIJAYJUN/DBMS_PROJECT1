@@ -1,0 +1,25 @@
+
+{%extends 'base_Publisher.html'%}
+{% block title%}
+書籍評分
+{% endblock title%}
+{% block content %}
+<div>
+<div id='main' style="width: 800px; height: 600px;"></div>
+
+<script>
+    var mychart = echarts.init(document.getElementById('main'));
+
+    mychart.setOption( {{bar_data|safe}} );
+
+</script>
+</div>
+{% if messages %}
+  <script>
+ {% for msg in messages %}
+      alert('{{ msg.message }}');
+    {% endfor %}
+  </script>
+{% endif %}
+
+{%endblock%}

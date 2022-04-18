@@ -29,9 +29,9 @@
         <option value="addBook">上架書籍</option>
         <option value="deleteBook">下架書籍</option>
         <option value="addAuthor">新增作者</option>
-        <option value="searchAuthor">查詢作者</option>
+        {% comment %} <option value="searchAuthor">查詢作者</option>
         <option value="searchComment">查詢書籍/評論</option>
-        <option value="bookInfo">書籍統計資訊</option>
+        <option value="bookInfo">書籍統計資訊</option> {% endcomment %}
     </select>
 </form>
 <br>
@@ -121,7 +121,7 @@
     </div>
 
 </form>
-{% comment %} <form class="needs-validation" name="deleteBook" id="deleteBook" novalidate style="display:none">{% csrf_token %}
+<form class="needs-validation" name="deleteBook" id="deleteBook" novalidate oninput="" style="display:none">{% csrf_token %}
     <div class="col-lg-6 offset-lg-3">
         <div class="py-5 text">
             <h1>下架書籍</h2>
@@ -130,19 +130,19 @@
             <thead><tr>
                 <th scope = "col">ＩＳＢＮ</th>
                 <th scope = "col">書名</th>
-                <th scope = "col">作者</th>
+                <th scope = "col">出版年</th>
                 <th scope = "col">刪除</th>
 
             </tr>
             </thead>
             <tbody>
-                {% for p in publisher%}
+                {% for b in book%}
                     <tr>
-                        <td>{{p.isbn}}</td>
-                        <td>{{p.name}}</td>
-                        <td>{{p.author}}</td>
+                        <td>{{b.ISBN}}</td>
+                        <td>{{b.title}}</td>
+                        <td>{{b.pubYear}}</td>
                         
-                        <td><a href="{% url 'deleteBook' id=p.isbn %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" onclick="return (confirm('你是否要刪除書籍 \'{{p.name}}\'？'))">delete</a>
+                        <td><a href="{% url 'deleteBook' id=b.ISBN %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" onclick="return (confirm('你是否要刪除書籍 \'{{b.title}}\'？'))">delete</a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -152,7 +152,7 @@
 
 
     </div>
-</form> {% endcomment %}
+</form>
 
 <form action="/comment_book/publish/addAuthor/" method="POST" class="needs-validation" name="addAuthor" id="addAuthor" novalidate style="display:none" >{% csrf_token %}
     

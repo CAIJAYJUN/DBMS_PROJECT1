@@ -1,36 +1,71 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base_User.html' %}
 {% block title%}
-使用者介面
+{{ book.title }} 評論
 {% endblock title%}
 
-<form method="post" action="{% url 'user_comment' %}">
+{% block content %}
+<div class="btn_div"><h4 class="welcome">Welcome! {{user_name}}</h4></div>
+<br>
+<h5>網友評論</h5>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">評論</th>
+            <th scope="col">評分</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in allComment %}
+        <tr>
+            <td>{{c.comments}}</td>
+            <td>{{c.star}}</td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+<form method="post">
     {% csrf_token %}
-    <h2>書籍評分</h2>
+    <h5>你的評分</h5>
     <form class="'row g-3">
+        <br>
         <div class="row">
-            <div class="col">
-                <label class="form-label">ISBN</label>
-                <input type="text" class="form-control" name='ISBN' placeholder="ISBN">
-            </div>
+            
             <div class="col">
                 <label class="form-label">書名</label>
-                <input type="text" class="form-control" name='title' placeholder="書名">
+                <input type="text" class="form-control" name='title' placeholder="書名" value="{{ book.title }}">
             </div>
             <div class="col">
-                <label class="form-label">評分 0-5 分</label>
-                <input type="text" class="form-control" name='star' placeholder="rating">
+                <label class="form-label">評分 1-10 分</label>
+                <select id="star" name='star' class="form-select">
+                    <option value='1'>1</option>
+                    <option value='2'>2</option>
+                    <option value='3'>3</option>
+                    <option value='4'>4</option>
+                    <option value='5'>5</option>
+                    <option value='6'>6</option>
+                    <option value='7'>7</option>
+                    <option value='8'>8</option>
+                    <option value='9'>9</option>
+                    <option value='10'>10</option>
+
+                </select>
+
+                
             </div>
         </div>
-        <div class="row">
-            <label class="form-label">email</label>
-            <input type="text" class="form-control" name='email' placeholder="email" aria-label="First name">
-        </div>
+        <br>
         <div class='row'>
-            <label class="form-label w-100 p-3">評論</label>
+            <div class="col">
+            <label class="form-label">評論</label>
             <textarea class="form-control" name='comments' placeholder="寫下你的評論" rows="5"></textarea>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <br>
+        <button type="submit" class="btn btn-primary">新增或修改</button>
     </form>
 </form>
 

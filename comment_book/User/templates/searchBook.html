@@ -1,0 +1,68 @@
+{% extends 'base_User.html' %}
+{% block title%}
+搜尋書籍
+{% endblock title%}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+<form name="search" method="GET" action="{% url 'searchBook' %}">
+    <h3>搜尋書籍</h3>
+    <br>
+    <input type="text" name="keyWord" class="form-control"  placeholder="書名或作者" {% if result%} value = {{input}} {% endif %}>
+    <br>
+    <button type="submit" class="btn btn-primary">搜尋</button>
+</form>
+<br>
+
+{% if result%}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">封面</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Year</th>
+            <th scope="col">Describe</th>
+            <th scope="col">平均評分</th>
+            <th scope="col">加入書架</th>
+            <th scope="col">評論</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for b in result %}
+        <tr>
+            <td><img src="/media/{{ b.bookImage }}" width="240"></td>
+            <td> {{ b.title }}</td>
+            <td> {{ b.name }}</td>
+            <td> {{ b.pubYear }}</td>
+            <td>{{b.bookProfile}}</td>
+            <td>{{b.avg_score}}</td>
+            <td>
+                <a href="{% url 'build_bookshelf' isbn=b.ISBN %}" class="bi bi-plus-circle" role="button" aria-hidden="true">Add</a>
+                
+            </td>
+            <td>
+                <a href="{% url 'comment' isbn=b.ISBN %}" class="bi bi-chat-right-text" role="button" aria-pressed="true">Comment</a>
+            </td>
+            
+            
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+
+{% endif %}
+
+
+
+{% if messages %}
+<script>
+    {% for msg in messages %}
+    alert('{{ msg.message }}');
+    {% endfor %}
+</script>
+{% endif %}
+{% endblock %}

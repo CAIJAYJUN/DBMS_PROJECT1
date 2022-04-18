@@ -1,0 +1,3 @@
+
+web: gunicorn urexpenses.wsgi
+
