@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-+50ldz@-o6zhm^+ydprs&4+5)8$757^fahx*0vjqu^f)6l93&3
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'urexpenses.herokuapp.com/'
+    'dbmsproject-1.herokuapp.com'
 ]
 
 # LOGGING = {
